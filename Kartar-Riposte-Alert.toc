@@ -2,6 +2,6 @@
 ## Title: Kartar Riposte Alert
 ## Author: Kartar
 ## Version: 1.0.0
-## SavedVariables: POSX, POSY
+## SavedVariables: KRA_POSX, KRA_POSY
 
 main.lua

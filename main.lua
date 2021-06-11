@@ -1,20 +1,18 @@
-
 -- initialize alert frame and all subframes
 local function initAlert()
-
 	--create base frame
 	KRAAlertFrame = CreateFrame("Frame", nil, UIParent)
-	KRAAlertFrame:SetSize(50, 50)
+	KRAAlertFrame:SetSize(75, 75)
 
 	--init DummyFrame (used to move frame later)
 	DummyFrame = CreateFrame("Frame", nil, UIParent)
 	
 	-- set initial position on first log on
-	if POSX == nil or POSY == nil then
-		KRAAlertFrame:SetPoint("CENTER",100, 0)
-		_, _, _, POSX, POSY = KRAAlertFrame:GetPoint()		
-	else -- if not first log in, load saved position from SavedVariables: POSX and POSY
-		KRAAlertFrame:SetPoint("CENTER",POSX, POSY)
+	if KRA_POSX == nil or KRA_POSY == nil then
+		KRAAlertFrame:SetPoint("CENTER", 125, 9)
+		_, _, _, KRA_POSX, KRA_POSY = KRAAlertFrame:GetPoint()		
+	else -- if not first log in, load saved position from SavedVariables: KRA_POSX and KRA_POSY
+		KRAAlertFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
 	end
 	
 	-- the base alert frame is just a black square which will work as a background
@@ -24,7 +22,7 @@ local function initAlert()
 	
 	-- create riposte icon frame
 	KRAAlertFrameIcon = CreateFrame("StatusBar", nil, KRAAlertFrame)
-	KRAAlertFrameIcon:SetSize(50, 50)
+	KRAAlertFrameIcon:SetSize(75, 75)
 	KRAAlertFrameIcon:SetPoint("TOP", 0, 0)
 	KRAAlertFrameIcon.texture = KRAAlertFrameIcon:CreateTexture()
 	KRAAlertFrameIcon.texture:SetAllPoints(true)	
@@ -32,7 +30,7 @@ local function initAlert()
 	
 	-- this is the frame used to create the cooldown swipe / fade out animation
 	KRAAlertFrameFade = CreateFrame("StatusBar", nil, KRAAlertFrameIcon)
-	KRAAlertFrameFade:SetSize(50, 50)
+	KRAAlertFrameFade:SetSize(75, 75)
 	KRAAlertFrameFade:SetPoint("TOP", 0, 0)
 	KRAAlertFrameFade.texture = KRAAlertFrameFade:CreateTexture()
 	KRAAlertFrameFade.texture:SetAllPoints(true)	
@@ -46,13 +44,12 @@ local function initAlert()
 	KRAAlertFrame:Hide() -- hide the frame after done initializing
 end
 
-
 local function unlock()
-	
 	-- create dummy frame to position alert frame (initialized in init func)	
 	DummyFrame:Show()
-	DummyFrame:SetSize(50, 50)
-	DummyFrame:SetPoint("CENTER",POSX, POSY)
+	DummyFrame:SetSize(75, 75)
+	DummyFrame:ClearAllPoints()
+	DummyFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
 	DummyFrame.texture = DummyFrame:CreateTexture()
 	DummyFrame.texture:SetAllPoints()
 	DummyFrame.texture:SetTexture("Interface\\Icons\\ability_warrior_challange")
@@ -64,11 +61,9 @@ local function unlock()
 	DummyFrame:SetScript("OnDragStart", DummyFrame.StartMoving)	
 	function setFramePos()
 		DummyFrame:StopMovingOrSizing()
-		_, _, _, POSX, POSY = DummyFrame:GetPoint() -- saves points POSX and POSY to saved variables
-		
+		_, _, _, KRA_POSX, KRA_POSY = DummyFrame:GetPoint() -- saves points KRA_POSX and KRA_POSY to saved variables
 	end
-	DummyFrame:SetScript("OnDragStop",setFramePos)
-
+	DummyFrame:SetScript("OnDragStop", setFramePos)
 
 	-- create text to help user
 	moveText = DummyFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -82,6 +77,7 @@ local function unlock()
 end
 
 local function lock()
+    KRAAlertFrame:SetMovable(false)
 	DummyFrame:EnableMouse(false)
 	DummyFrame:Hide()
 end
@@ -90,7 +86,7 @@ end
 local function triggerAlert()
 
 	lock()
-	KRAAlertFrame:SetPoint("CENTER",POSX, POSY)
+	KRAAlertFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
 
 	-- show the frame
 	KRAAlertFrame:Show()
@@ -173,8 +169,8 @@ SlashCmdList["KRA_TEST"] = function(msg)
 		lock()
 	elseif(msg=="reset") then
 		print("Resetting position.")
-		POSX = 100
-		POSY = 0
+		KRA_POSX = 125
+		KRA_POSY = 9
 	else 
 		print("-- Kartar's Riposte Alert --")
 		print("Commands:")

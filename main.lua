@@ -3,6 +3,7 @@ local function initAlert()
 	--create base frame
 	KRAAlertFrame = CreateFrame("Frame", "KRAAlertFrame", UIParent)
 	KRAAlertFrame:SetSize(75, 75)
+	KRAAlertFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
 
 	--init DummyFrame (used to move frame later)
 	DummyFrame = CreateFrame("Frame", nil, UIParent)
@@ -28,12 +29,12 @@ local function initAlert()
 	KRAAlertFrameFade.texture:SetAllPoints(true)	
 	KRAAlertFrameFade.texture:SetColorTexture(0.0, 0.0, 0.0, 0.5)
 	
-	-- this is the text that shows the remaning time on the current riposte window
+	-- this is the text that shows the remaining time on the current riposte window
 	timerText = KRAAlertFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	timerText:SetPoint("CENTER",0,-25-5)
+	timerText:SetPoint("CENTER",0,-40-5)
 	timerText:SetText("")
 
-	KRAAlertFrame:Hide() -- hide the frame after done initializing
+	KRAAlertFrame:Hide() -- hide the frame after it is done initializing
 end
 
 local function unlock()

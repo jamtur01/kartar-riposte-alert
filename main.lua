@@ -125,7 +125,7 @@ local function OnEvent(self, event)
 		dstGUID, dstName, dstFlags, dstFlags2,
 		arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 = CombatLogGetCurrentEventInfo()
 
-	    -- read thru players combat log
+		-- read thru player's combat log
 		if srcName == UnitName("player") then
 		  if(action=="SPELL_CAST_SUCCESS" and arg2==NAME_RIPOSTE) then 
 			KRAAlertFrame:Hide()

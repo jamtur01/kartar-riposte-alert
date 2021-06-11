@@ -93,7 +93,7 @@ local function triggerAlert()
 	KRAAlertFrameFade:SetScript("OnUpdate", function(self, elapsed)
 		timer = timer + elapsed -- add the amount of time elapsed since last update to current timer
 		percDone = timer / END -- get percentage of total time elapsed 
-		KRAAlertFrameFade:SetSize(50, 50*percDone) -- update the fade frame to reflect time remaining
+		KRAAlertFrameFade:SetSize(75, 75*percDone) -- update the fade frame to reflect time remaining
 		timerText:SetText(string.format("%.1f", END - timer)) --update the timer below the alert
 		
 		-- when timer has reached the desired value, as defined by END (seconds), restart it by setting it to 0, as defined by START

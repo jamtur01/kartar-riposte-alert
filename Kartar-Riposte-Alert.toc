@@ -1,0 +1,7 @@
+## Interface: 20501
+## Title: Kartar Riposte Alert
+## Author: Kartar
+## Version: 1.0.0
+## SavedVariables: POSX, POSY
+
+main.lua

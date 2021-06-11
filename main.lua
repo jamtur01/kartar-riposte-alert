@@ -1,19 +1,11 @@
 -- initialize alert frame and all subframes
 local function initAlert()
 	--create base frame
-	KRAAlertFrame = CreateFrame("Frame", nil, UIParent)
+	KRAAlertFrame = CreateFrame("Frame", "KRAAlertFrame", UIParent)
 	KRAAlertFrame:SetSize(75, 75)
 
 	--init DummyFrame (used to move frame later)
 	DummyFrame = CreateFrame("Frame", nil, UIParent)
-	
-	-- set initial position on first log on
-	if KRA_POSX == nil or KRA_POSY == nil then
-		KRAAlertFrame:SetPoint("CENTER", 125, 9)
-		_, _, _, KRA_POSX, KRA_POSY = KRAAlertFrame:GetPoint()		
-	else -- if not first log in, load saved position from SavedVariables: KRA_POSX and KRA_POSY
-		KRAAlertFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
-	end
 	
 	-- the base alert frame is just a black square which will work as a background
 	KRAAlertFrame.texture = KRAAlertFrame:CreateTexture()
@@ -77,7 +69,7 @@ local function unlock()
 end
 
 local function lock()
-    KRAAlertFrame:SetMovable(false)
+    --KRAAlertFrame:SetMovable(false)
 	DummyFrame:EnableMouse(false)
 	DummyFrame:Hide()
 end
@@ -114,7 +106,14 @@ local function triggerAlert()
 end
 
 -- combat log function
-local function OnEvent(self, event)
+local function OnEvent(self, event, arg1)
+
+	if event == "ADDON_LOADED" and arg1 == "Kartar-Riposte-Alert" then
+		if KRA_POSX == nil or KRA_POSY == nil then
+			KRA_POSX, KRA_POSY = 142, 9
+		end
+	end
+	
 	if(GetSpellInfo(NAME_RIPOSTE)) then -- only load if player knows the spell
 		local timestamp, eventType, hideCaster,
 		srcGUID, srcName, srcFlags, srcFlags2,
@@ -169,8 +168,7 @@ SlashCmdList["KRA_TEST"] = function(msg)
 		lock()
 	elseif(msg=="reset") then
 		print("Resetting position.")
-		KRA_POSX = 125
-		KRA_POSY = 9
+		KRAAlertFrame:ClearAllPoints()
 	else 
 		print("-- Kartar's Riposte Alert --")
 		print("Commands:")
@@ -185,6 +183,7 @@ end
 -- created hidden frame, register it to look at combat log events, on each combat log event load OnEvent() function
 local f = CreateFrame("Frame")
 f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", OnEvent)
 
 NAME_RIPOSTE = GetSpellInfo(14251)

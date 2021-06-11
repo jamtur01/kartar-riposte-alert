@@ -3,11 +3,8 @@ local function initAlert()
 	--create base frame
 	KRAAlertFrame = CreateFrame("Frame", "KRAAlertFrame", UIParent)
 	KRAAlertFrame:SetSize(75, 75)
-	KRAAlertFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
+	KRAAlertFrame:SetPoint("CENTER", BT4StanceButton1, "CENTER", KRA_POSX, KRA_POSY)
 
-	--init DummyFrame (used to move frame later)
-	DummyFrame = CreateFrame("Frame", nil, UIParent)
-	
 	-- the base alert frame is just a black square which will work as a background
 	KRAAlertFrame.texture = KRAAlertFrame:CreateTexture()
 	KRAAlertFrame.texture:SetAllPoints()
@@ -37,49 +34,10 @@ local function initAlert()
 	KRAAlertFrame:Hide() -- hide the frame after it is done initializing
 end
 
-local function unlock()
-	-- create dummy frame to position alert frame (initialized in init func)	
-	DummyFrame:Show()
-	DummyFrame:SetSize(75, 75)
-	DummyFrame:ClearAllPoints()
-	DummyFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
-	DummyFrame.texture = DummyFrame:CreateTexture()
-	DummyFrame.texture:SetAllPoints()
-	DummyFrame.texture:SetTexture("Interface\\Icons\\ability_warrior_challange")
-
-	-- make DummyFrame moveable and save its position
-	DummyFrame:SetMovable(true)
-	DummyFrame:EnableMouse(true)
-	DummyFrame:RegisterForDrag("LeftButton")
-	DummyFrame:SetScript("OnDragStart", DummyFrame.StartMoving)	
-	function setFramePos()
-		DummyFrame:StopMovingOrSizing()
-		_, _, _, KRA_POSX, KRA_POSY = DummyFrame:GetPoint() -- saves points KRA_POSX and KRA_POSY to saved variables
-	end
-	DummyFrame:SetScript("OnDragStop", setFramePos)
-
-	-- create text to help user
-	moveText = DummyFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	moveText:SetPoint("TOP",0,12)
-	moveText:SetText("Move me!")
-
-	lockText = DummyFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	lockText:SetPoint("BOTTOM",0,-12)
-	lockText:SetText("'/kra lock' to lock")
-
-end
-
-local function lock()
-    --KRAAlertFrame:SetMovable(false)
-	DummyFrame:EnableMouse(false)
-	DummyFrame:Hide()
-end
-
 -- The event that is triggered after an attack is parried
 local function triggerAlert()
 
-	lock()
-	KRAAlertFrame:SetPoint("CENTER", KRA_POSX, KRA_POSY)
+	KRAAlertFrame:SetPoint("CENTER", BT4StanceButton1, "CENTER", KRA_POSX, KRA_POSY)
 
 	-- show the frame
 	KRAAlertFrame:Show()
@@ -111,8 +69,9 @@ local function OnEvent(self, event, arg1)
 
 	if event == "ADDON_LOADED" and arg1 == "Kartar-Riposte-Alert" then
 		if KRA_POSX == nil or KRA_POSY == nil then
-			KRA_POSX, KRA_POSY = 142, 9
+			KRA_POSX, KRA_POSY = 190, 9
 		end
+		self:UnregisterEvent("ADDON_LOADED")
 	end
 	
 	if(GetSpellInfo(NAME_RIPOSTE)) then -- only load if player knows the spell
@@ -160,22 +119,9 @@ SlashCmdList["KRA_TEST"] = function(msg)
 
 	if(msg=="test" or msg=="t") then
 		triggerAlert()
-		
-	elseif(msg=="unlock" or msg=="u" or msg=="ul") then
-		print("Unlocking frame.")
-		unlock()
-	elseif(msg=="lock" or msg=="l") then
-		print("Locking frame.")
-		lock()
-	elseif(msg=="reset") then
-		print("Resetting position.")
-		KRAAlertFrame:ClearAllPoints()
 	else 
 		print("-- Kartar's Riposte Alert --")
 		print("Commands:")
-		print("   '/kra unlock' - Unlocks frame to be moved")
-		print("   '/kra lock'   - Locks frame in place")
-		print("   '/kra reset'  - Reset the position of the alert frame")
 		print("   '/kra test'   - Test the alert")
 	end
    	

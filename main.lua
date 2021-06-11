@@ -17,7 +17,7 @@ local function initAlert()
 		KRAAlertFrame:SetPoint("CENTER",POSX, POSY)
 	end
 	
-	-- the base alert frame is just a black square which will work as a background (makes the cooldown timer effect look better too)
+	-- the base alert frame is just a black square which will work as a background
 	KRAAlertFrame.texture = KRAAlertFrame:CreateTexture()
 	KRAAlertFrame.texture:SetAllPoints()
 	KRAAlertFrame.texture:SetColorTexture(0.0, 0.0, 0.0, 1)
@@ -30,7 +30,6 @@ local function initAlert()
 	KRAAlertFrameIcon.texture:SetAllPoints(true)	
 	KRAAlertFrameIcon.texture:SetTexture("Interface\\Icons\\ability_warrior_challange")
 	
-
 	-- this is the frame used to create the cooldown swipe / fade out animation
 	KRAAlertFrameFade = CreateFrame("StatusBar", nil, KRAAlertFrameIcon)
 	KRAAlertFrameFade:SetSize(50, 50)
@@ -45,7 +44,6 @@ local function initAlert()
 	timerText:SetText("")
 
 	KRAAlertFrame:Hide() -- hide the frame after done initializing
-
 end
 
 
@@ -59,7 +57,7 @@ local function unlock()
 	DummyFrame.texture:SetAllPoints()
 	DummyFrame.texture:SetTexture("Interface\\Icons\\ability_warrior_challange")
 
-	-- make DummyFrame moveable and save it's position
+	-- make DummyFrame moveable and save its position
 	DummyFrame:SetMovable(true)
 	DummyFrame:EnableMouse(true)
 	DummyFrame:RegisterForDrag("LeftButton")
@@ -84,12 +82,11 @@ local function unlock()
 end
 
 local function lock()
-	--KRAAlertFrame:SetMovable(false)
 	DummyFrame:EnableMouse(false)
 	DummyFrame:Hide()
 end
 
--- event that is triggered after a dodge occurs
+-- The event that is triggered after an attack is parried
 local function triggerAlert()
 
 	lock()
@@ -133,7 +130,7 @@ local function OnEvent(self, event)
 		  if(action=="SPELL_CAST_SUCCESS" and arg2==NAME_RIPOSTE) then 
 			KRAAlertFrame:Hide()
 		  end
-        end
+		end
 
 		if dstName == UnitName("player") then
 			-- below works on both swings and spells
@@ -175,16 +172,16 @@ SlashCmdList["KRA_TEST"] = function(msg)
 		print("Locking frame.")
 		lock()
 	elseif(msg=="reset") then
-		print("Reseting position.")
+		print("Resetting position.")
 		POSX = 100
 		POSY = 0
 	else 
 		print("-- Kartar's Riposte Alert --")
 		print("Commands:")
-		print("   '/kra unlock' - unlocks frames to be moved")
-		print("   '/kra lock'   - locks frame in place")
-		print("   '/kra reset'  - reset the position of the alert frame")
-		print("   '/kra test'   - test the alert out")
+		print("   '/kra unlock' - Unlocks frame to be moved")
+		print("   '/kra lock'   - Locks frame in place")
+		print("   '/kra reset'  - Reset the position of the alert frame")
+		print("   '/kra test'   - Test the alert")
 	end
    	
 end 

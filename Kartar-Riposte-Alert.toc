@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 11501
 ## Title: Kartar Riposte Alert
 ## Author: Kartar
 ## Version: 1.0.0

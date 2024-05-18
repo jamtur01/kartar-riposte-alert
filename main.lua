@@ -3,7 +3,7 @@ local function initAlert()
 	--create base frame
 	KRAAlertFrame = CreateFrame("Frame", "KRAAlertFrame", UIParent)
 	KRAAlertFrame:SetSize(75, 75)
-	KRAAlertFrame:SetPoint("CENTER", BT4StanceButton1, "CENTER", KRA_POSX, KRA_POSY)
+	KRAAlertFrame:SetPoint("CENTER", BT4StanceButton1, "TOP", KRA_POSX, KRA_POSY)
 
 	-- the base alert frame is just a black square which will work as a background
 	KRAAlertFrame.texture = KRAAlertFrame:CreateTexture()
